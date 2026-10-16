@@ -1,0 +1,25 @@
+# Run from the repository root: docker compose -f docker/compose.yaml ...
+# No published ports, no host bind mounts, no docker.sock, no network at runtime.
+name: session-archiver-lab
+services:
+  check:
+    build: { context: .., dockerfile: docker/Dockerfile, target: check, args: { NPM_REGISTRY: "${NPM_REGISTRY:?set NPM_REGISTRY}" } }
+    network_mode: none
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    cpus: 2
+    mem_limit: 2g
+    memswap_limit: 2g
+    pids_limit: 256
+  daemon:
+    build: { context: .., dockerfile: docker/Dockerfile, target: daemon, args: { NPM_REGISTRY: "${NPM_REGISTRY:?set NPM_REGISTRY}" } }
+    network_mode: none
+    tmpfs: ["/tmp", "/home/node/.paseo:uid=1000,gid=1000,mode=0700"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    cpus: 2
+    mem_limit: 2g
+    memswap_limit: 2g
+    pids_limit: 256

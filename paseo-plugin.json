@@ -1,0 +1,1 @@
+{"id":"session-archiver","description":"Soft-archives consumed helpers and long-idle chats; preview by default","requirements":{"paseo":">=0.11.1"},"build":[["npm","ci","--omit=dev","--ignore-scripts","--offline","--no-audit","--no-fund"]]}
